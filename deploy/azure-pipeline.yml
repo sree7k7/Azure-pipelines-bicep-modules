@@ -1,0 +1,34 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - main
+    - master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- name: location
+  value: northeurope
+- name: ResourceGroupName
+  value: contoso
+- name: ServiceConnectionName
+  value: contoso
+
+jobs:
+- job:
+  steps:
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      connectedServiceName: $(ServiceConnectionName)
+      deploymentName: $(Build.BuildNumber)
+      location: $(deploymentDefaultLocation)
+      resourceGroupName: $(ResourceGroupName)
+      csmFile: main_module.bicep
+      # overrideParameters: >
+      #   -environmentType $(EnvironmentType)
+      #   -deployToyManualsStorageAccount $(DeployToyManualsStorageAccount)
+  - script: echo pipeline deployed!
+    displayName: 'Run a one-line script'
