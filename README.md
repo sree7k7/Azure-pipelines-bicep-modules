@@ -1,6 +1,6 @@
 # Deploy Vnet, Vm, NSG VpnGW using Azure Pipelines
 
-## creating resources using azure bicep modules.
+### creating resources using azure bicep modules.
 
 ## Run
   - [Purpose](#purpose)
@@ -19,17 +19,18 @@ Create Azure pipelines, and automate to deploy your azure infra/resources in (az
 - [azure cli](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) & [sign in](https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli)
 - [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview?tabs=bicep) & [Azure pipelines](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/what-is-azure-pipelines?view=azure-devops)
 - Create a resource group in Azure portal with the following command.
+  
   ```
   az group create -g contoso -l northeurope
   ```
 
 ## Repository
 
-Create a repository and clone the repo. Follow this [gudie](https://learn.microsoft.com/en-us/training/modules/build-first-bicep-deployment-pipeline-using-azure-pipelines/3-exercise-create-run-basic-pipeline).
+1. Create a repository and clone the repo. Follow this [gudie](https://learn.microsoft.com/en-us/training/modules/build-first-bicep-deployment-pipeline-using-azure-pipelines/3-exercise-create-run-basic-pipeline).
 
-After cloning createa folder `deploy`. Add a file with name and code (scripted here): [azure-pipeline.yml](deploy/azure-pipeline.yml)
+2. After cloning createa folder `deploy`. Add a file with name and code (scripted here): [azure-pipeline.yml](deploy/azure-pipeline.yml)
 
-Copy: [main_module.bicep](main_module.bicep), [vm.bicep](vm.bicep), [vnet_vpngw.bicep](vnet_vpngw.bicep)
+3. Copy (outside `deploy` directory): [main_module.bicep](main_module.bicep), [vm.bicep](vm.bicep), [vnet_vpngw.bicep](vnet_vpngw.bicep)
 
 ## Pipelines
 
@@ -51,5 +52,5 @@ Copy: [main_module.bicep](main_module.bicep), [vm.bicep](vm.bicep), [vnet_vpngw.
 ## Clean up
 - In terminal execute the following command:
 ```azcli
-az group delete -g "aws-azure-bgp" --no-wait
+az group delete -g "contoso" --no-wait
 ```
