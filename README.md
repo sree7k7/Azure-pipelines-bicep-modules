@@ -25,17 +25,17 @@ Create Azure pipelines, and automate to deploy your azure infra/resources in (az
   ```
 
 ## Repository
-
-1. Create a repository and clone the repo. Follow this Ref [gudie](https://learn.microsoft.com/en-us/training/modules/build-first-bicep-deployment-pipeline-using-azure-pipelines/3-exercise-create-run-basic-pipeline) (create organization, project).
+1. login to [dev.azure.com](https://azure.microsoft.com/en-us/products/devops).
+2. Create **organization**, (private) **project** and **repo**. clone the repo. Follow this Ref [gudie](https://learn.microsoft.com/en-us/training/modules/build-first-bicep-deployment-pipeline-using-azure-pipelines/3-exercise-create-run-basic-pipeline).
    
-   - To clone, navigate to Repos -> click: Clone in VS Code (shown in below pic):
+   - To clone, navigate to Repos → **click**: Clone in VS Code (shown in below pic):
   ![Alt text](pics/azure-repo.png)
 
-2. After cloning createa folder `deploy`. Add a file with name and code (scripted here): [azure-pipeline.yml](deploy/azure-pipeline.yml).
+3. After cloning create a folder `deploy`. Add a file with name and code (scripted here): [azure-pipeline.yml](deploy/azure-pipeline.yml).
 
-3. Copy (outside `deploy` directory): [main_module.bicep](main_module.bicep), [vm.bicep](vm.bicep), [vnet_vpngw.bicep](vnet_vpngw.bicep).
+4. **Copy** (outside `deploy` directory): [main_module.bicep](main_module.bicep), [vm.bicep](vm.bicep), [vnet_vpngw.bicep](vnet_vpngw.bicep).
 
-4. commit and push the code.
+5. commit and push the code. The traditional way!
    
    ```hcl
    git add .
@@ -58,6 +58,7 @@ Create Azure pipelines, and automate to deploy your azure infra/resources in (az
 
 
 ![Alt text](pics/pipeline_config.png)
+
 5. Check your resources deployed using azure pipelines.
    
 ## Clean up
