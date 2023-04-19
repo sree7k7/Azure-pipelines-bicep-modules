@@ -1,6 +1,8 @@
-# Deploy Vnet, Vm, NSG VpnGW using Azure Pipelines
+# Deploy Vnet, Vm, NSG VpnGW using Azure Pipelines on Azure DevOps.
 
 ### creating resources using azure bicep modules.
+
+> Note: This guide helps implementing on Azure DevOps.
 
 ## Run
   - [Purpose](#purpose)
@@ -33,9 +35,11 @@ Create Azure pipelines, and automate to deploy your azure infra/resources in (az
 
 3. After cloning create a folder `deploy`. Add a file with name and code (scripted here): [azure-pipeline.yml](deploy/azure-pipeline.yml).
 
-4. **Copy** (outside `deploy` directory): [main_module.bicep](main_module.bicep), [vm.bicep](vm.bicep), [vnet_vpngw.bicep](vnet_vpngw.bicep).
+4. **Copy** (outside `deploy` directory): [main.bicep](main.bicep).
 
-5. commit and push the code. The traditional way!
+5. Create a folder `modules` add [vm.bicep](vm.bicep), [vnet_vpngw.bicep](vnet_vpngw.bicep).
+
+6. Commit and push the code. The traditional way!
    
    ```hcl
    git add .
@@ -46,9 +50,9 @@ Create Azure pipelines, and automate to deploy your azure infra/resources in (az
 ## Pipelines
 
 1. login to [dev.azure.com](https://azure.microsoft.com/en-us/products/devops).
-2. After, creating an organization (e.g: *first-org*) and (private) project (e.g: *first-project*). Might created in above steps.
-3. Create a service connection:
-   - In project settings (located at bottom) → Service connections → Create service connection → Azure Resource Manager → Service principal (automatic) → select: Subscription → Resource group: contoso → Service connection name: contoso.
+2. After, creating an organization (e.g: *first-org*) and (private) project (e.g: *first-project*), created in above steps.
+3. Create a **service connection**:
+   - In project settings (*located at bottom*) → click: **Service connections** → Create service connection → Azure Resource Manager → Service principal (automatic) → select: Subscription → Resource group: contoso → Service connection name: contoso.
 
 ![Alt text](pics/service_connection.png)
 

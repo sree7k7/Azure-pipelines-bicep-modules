@@ -26,7 +26,7 @@ jobs:
       deploymentName: $(Build.BuildNumber)
       location: $(deploymentDefaultLocation)
       resourceGroupName: $(ResourceGroupName)
-      csmFile: main_module.bicep
+      csmFile: main.bicep
       # overrideParameters: >
       #   -environmentType $(EnvironmentType)
       #   -deployToyManualsStorageAccount $(DeployToyManualsStorageAccount)

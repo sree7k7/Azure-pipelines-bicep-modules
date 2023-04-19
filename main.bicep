@@ -1,7 +1,7 @@
 @description('Location for all resources.')
 param location string = resourceGroup().location
 
-module virtualnetowkMod 'vnet_vpngw.bicep' = {
+module virtualnetowkMod './module/vnet_vpngw.bicep' = {
   name: 'vnet'
   params: {
     location: location
@@ -13,7 +13,7 @@ module virtualnetowkMod 'vnet_vpngw.bicep' = {
   }
 }
 
-module vm 'vm.bicep' = {
+module vm './module/vm.bicep' = {
   name: 'vm'
   params: {
     location: location
