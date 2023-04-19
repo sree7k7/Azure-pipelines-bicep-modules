@@ -1,7 +1,7 @@
 @description('Location for all resources.')
 param location string = resourceGroup().location
 
-module virtualnetowkMod './module/vnet_vpngw.bicep' = {
+module virtualnetowk './modules/vnet_vpngw.bicep' = {
   name: 'vnet'
   params: {
     location: location
@@ -13,14 +13,14 @@ module virtualnetowkMod './module/vnet_vpngw.bicep' = {
   }
 }
 
-module vm './module/vm.bicep' = {
+module vm './modules/vm.bicep' = {
   name: 'vm'
   params: {
     location: location
-    virtualNetworkName: virtualnetowkMod.name
-    subnetRef: virtualnetowkMod.outputs.frontendsubnetname
+    virtualNetworkName: virtualnetowk.name
+    subnetRef: virtualnetowk.outputs.frontendsubnetname
     vmSize: 'Standard_D2s_v3'
     numberOfInstances: 1
-    vmNamePrefix: virtualnetowkMod.name
+    vmNamePrefix: virtualnetowk.name
   }
 }
