@@ -1,3 +1,5 @@
+name: azurepipelines
+
 trigger:
   batch: true
   branches:

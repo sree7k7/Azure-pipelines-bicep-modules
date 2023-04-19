@@ -2,7 +2,7 @@
 
 ### creating resources using azure bicep modules.
 
-> Note: This guide helps implementing on Azure DevOps.
+> Note: This guide helps implementing on Azure DevOps. For GitHub actions follow this [guide](https://github.com/sree7k7/github-actions-azure-deployments).
 
 ## Run
   - [Purpose](#purpose)
