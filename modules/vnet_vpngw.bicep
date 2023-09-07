@@ -20,6 +20,9 @@ var GatewaySubnet = 'GatewaySubnet'
 @description('Name of Azure vpn resource')
 param vpngateway string = 'VpnGW'
 var vpngw_pip = 'vpngw-pip'
+param psk string = 'abc@143'
+param cgwip string = '20.67.217.119'
+param bgp_peer_ip string = '10.2.3.254'
 
 // ----- vnet subnets-------
 
@@ -86,36 +89,36 @@ resource bastionsubnet 'Microsoft.Network/virtualNetworks/subnets@2022-01-01' = 
   }
 }
 
-resource BastionPIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
-  name: BastionPiPName
-  location: location
-  sku: {
-    name: 'Standard'
-  }
-  properties: {
-    publicIPAllocationMethod: 'Static'
-  }
-}
+// resource BastionPIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
+//   name: BastionPiPName
+//   location: location
+//   sku: {
+//     name: 'Standard'
+//   }
+//   properties: {
+//     publicIPAllocationMethod: 'Static'
+//   }
+// }
 
-resource bastionHost 'Microsoft.Network/bastionHosts@2022-01-01' = {
-  name: bastionHostName
-  location: location
-  properties: {
-    ipConfigurations: [
-      {
-        name: 'IpConf'
-        properties: {
-          subnet: {
-            id: bastionsubnet.id
-          }
-          publicIPAddress: {
-            id: BastionPIP.id
-          }
-        }
-      }
-    ]
-  }
-}
+// resource bastionHost 'Microsoft.Network/bastionHosts@2022-01-01' = {
+//   name: bastionHostName
+//   location: location
+//   properties: {
+//     ipConfigurations: [
+//       {
+//         name: 'IpConf'
+//         properties: {
+//           subnet: {
+//             id: bastionsubnet.id
+//           }
+//           publicIPAddress: {
+//             id: BastionPIP.id
+//           }
+//         }
+//       }
+//     ]
+//   }
+// }
 // output PublicIPVM string = publicIPAddress.name
 
 // ---------vpn gateway -------------
@@ -130,104 +133,105 @@ resource virtualNetworks_vnet_name_GatewaySubnet 'Microsoft.Network/virtualNetwo
   }
 }
 
-resource GWpublicIp 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
-  name: vpngw_pip
-  location: location
-  sku: {
-    name: 'Standard'
-  }
-  properties: {
-    publicIPAllocationMethod: 'Static'
-  }
-}
+// resource GWpublicIp 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
+//   name: vpngw_pip
+//   location: location
+//   sku: {
+//     name: 'Standard'
+//   }
+//   properties: {
+//     publicIPAllocationMethod: 'Static'
+//   }
+// }
 
-resource VpnGW 'Microsoft.Network/virtualNetworkGateways@2022-07-01' = {
-  name: '${vpngateway}-${virtualNetworkName}'
-  location: location
-  tags: {
-    tagName1: 'vpngwtag'
-  }
-  properties: {
-    activeActive: false
-    allowRemoteVnetTraffic: true
-    allowVirtualWanTraffic: true
-    bgpSettings: {
-      asn: 65030
-      peerWeight: 50
-    }
-    disableIPSecReplayProtection: true
-    enableBgp: true
-    enableBgpRouteTranslationForNat: false
-    enableDnsForwarding: false
-    enablePrivateIpAddress: true
-    gatewayType: 'Vpn'
-    ipConfigurations: [
-      {
-        id: vpngateway
-        name: 'vpngw'
-        properties: {
-          privateIPAllocationMethod: 'Dynamic'
-          publicIPAddress: {
-            id: GWpublicIp.id
-          }
-          subnet: {
-            id: virtualNetworks_vnet_name_GatewaySubnet.id
-          }
-        }
-      }
-    ]
-    sku: {
-      name: 'VpnGw2'
-      tier: 'VpnGw2'
-    }
-    vpnGatewayGeneration: 'Generation2'
-    vpnType: 'RouteBased'
-  }
-}
+// resource VpnGW 'Microsoft.Network/virtualNetworkGateways@2023-04-01' = {
+//   name: '${vpngateway}-${virtualNetworkName}'
+//   location: location
+//   tags: {
+//     tagName1: 'vpngwtag'
+//   }
+//   properties: {
+//     activeActive: false
+//     allowRemoteVnetTraffic: true
+//     allowVirtualWanTraffic: true
+//     bgpSettings: {
+//       asn: 65030
+//       peerWeight: 50
+//     }
+//     disableIPSecReplayProtection: true
+//     enableBgp: true
+//     enableBgpRouteTranslationForNat: false
+//     enableDnsForwarding: false
+//     enablePrivateIpAddress: true
+//     gatewayType: 'Vpn'
+//     ipConfigurations: [
+//       {
+//         id: vpngateway
+//         name: 'vpngw'
+//         properties: {
+//           privateIPAllocationMethod: 'Dynamic'
+//           publicIPAddress: {
+//             id: GWpublicIp.id
+//           }
+//           subnet: {
+//             id: virtualNetworks_vnet_name_GatewaySubnet.id
+//           }
+//         }
+//       }
+//     ]
+//     sku: {
+//       name: 'VpnGw2'
+//       tier: 'VpnGw2'
+//     }
+//     vpnGatewayGeneration: 'Generation2'
+//     vpnType: 'RouteBased'
+//   }
+// }
 
-// Local network Gateway
+// // Local network Gateway
 
-param cgwip string = '20.219.181.185'
+// resource localnetworkgateway 'Microsoft.Network/localNetworkGateways@2022-07-01' = {
+//   name: 'localnetworkgateway'
+//   location: location
+//   tags: {
+//     tagName1: 'bgpconnection'
+//   }
+//   properties: {
+//     bgpSettings: {
+//       asn: 65020
+//       bgpPeeringAddress: bgp_peer_ip
+//       peerWeight: 50
+//     }
+//     gatewayIpAddress: cgwip
+//   }
+// }
 
-resource localnetworkgateway 'Microsoft.Network/localNetworkGateways@2022-07-01' = {
-  name: 'localnetworkgateway'
-  location: location
-  tags: {
-    tagName1: 'bgpconnection'
-  }
-  properties: {
-    bgpSettings: {
-      asn: 65020
-      bgpPeeringAddress: '10.2.3.254'
-      peerWeight: 50
-    }
-    gatewayIpAddress: cgwip
-  }
-}
+// // vpn site connection
 
-// vpn site connection
-
-resource vpnsiteconection 'Microsoft.Network/connections@2022-07-01' = {
-  name: 'vpnsiteconection'
-  location: location
-  properties: {
-    virtualNetworkGateway1: {
-      id: VpnGW.id
-    }
-    localNetworkGateway2: {
-      id: localnetworkgateway.id
-    }
-    connectionType: 'IPsec'
-    connectionProtocol: 'IKEv2'
-    routingWeight: 50
-    sharedKey: 'abc@143'
-    enableBgp: true
-    useLocalAzureIpAddress: false
-    usePolicyBasedTrafficSelectors: false
-    ipsecPolicies: []
-    trafficSelectorPolicies: []
-    expressRouteGatewayBypass: false
-    dpdTimeoutSeconds: 0
-    connectionMode: 'Default'
-  }
-}
+// resource vpnsiteconection 'Microsoft.Network/connections@2022-07-01' = {
+//   name: 'vpnsiteconection'
+//   location: location
+//   properties: {
+//     virtualNetworkGateway1: {
+//       id: VpnGW.id
+//       properties: {
+//         activeActive: false
+//       }
+//     }
+//     localNetworkGateway2: {
+//       id: localnetworkgateway.id
+//     }
+//     connectionType: 'IPsec'
+//     connectionProtocol: 'IKEv2'
+//     // routingWeight: 50
+//     sharedKey: psk
+//     enableBgp: true
+//     useLocalAzureIpAddress: false
+//     usePolicyBasedTrafficSelectors: false
+//     ipsecPolicies: []
+//     trafficSelectorPolicies: []
+//     expressRouteGatewayBypass: false
+//     dpdTimeoutSeconds: 0
+//     connectionMode: 'Default'
+//   }
+// }

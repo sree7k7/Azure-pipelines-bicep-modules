@@ -8,6 +8,7 @@ param location string = 'northeurope'
 
 @description('Prefix to use for VM names')
 param vmNamePrefix string = 'BackendVM'
+param Servername string = 'BackendVM'
 
 @description('Size of the virtual machines')
 param vmSize string = 'Standard_D2s_v3'
@@ -18,6 +19,8 @@ param adminUsername string = 'demousr'
 @description('Admin password')
 @secure()
 param adminPassword string = 'Password@123'
+param Project string = 'sam'
+param Environment string = 'test'
 
 var networkInterfaceName = 'nic'
 param numberOfInstances int = 1
@@ -63,7 +66,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-0
 // ------vm public ip --------
 
 resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = [for i in range(0, numberOfInstances): {
-  name: 'publicIPAddressName-${i}'
+  name: 'publicIPAddressName${i}-${Servername}'
   location: location
   sku: {
     name: 'Basic'
@@ -77,7 +80,8 @@ resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = [for
 
 // ----- nic ------
 resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = [for i in range(0, numberOfInstances): {
-  name: '${networkInterfaceName}${i}'
+  // name: '${networkInterfaceName}${i}'
+  name: '${networkInterfaceName}${i}-${Servername}'
   location: location
   properties: {
     ipConfigurations: [
@@ -97,19 +101,19 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = [fo
     ]
   }
   dependsOn: [
-    
   ]
 }]
 
 resource vm 'Microsoft.Compute/virtualMachines@2022-11-01' = [for i in range(0, numberOfInstances): {
-  name: '${vmNamePrefix}_vm${i}'
+  // name: '${vmNamePrefix}_vm${i}'
+  name: '${Servername}${i}'
   location: location
   properties: {
     hardwareProfile: {
       vmSize: vmSize
     }
     osProfile: {
-      computerName: '${vmNamePrefix}${i}'
+      computerName: '${vmNamePrefix}${Servername}'
       adminUsername: adminUsername
       adminPassword: adminPassword
     }
@@ -131,6 +135,10 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-11-01' = [for i in range(0, 
         }
       ]
     }
+  }
+  tags: {
+    Project: Project
+    Environment: Environment
   }
 }]
 
